@@ -1,8 +1,18 @@
 @import "tailwindcss";
 
+/* 1. Baris ini wajib ditambah agar Tailwind tahu kita pakai class manual untuk dark mode */
+@variant dark (&:where(.dark, .dark *));
+
+/* Mode Siang (Default) */
 :root {
   --background: #ffffff;
   --foreground: #171717;
+}
+
+/* 2. Ubah @media menjadi class .dark (Mode Malam) */
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
 }
 
 @theme inline {
@@ -10,17 +20,43 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* --- TAMBAHAN CUSTOM ANIMATION TAILWIND V4 --- */
+  --animate-fade-in: fade-in 1s ease-out;
+  --animate-slide-in-right: slide-in-right 0.8s ease-out;
+  --animate-bounce-slow: bounce 3s infinite;
+  --animate-bounce-horizontal: bounce-horizontal 1s infinite;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* --- KEYFRAMES UNTUK ANIMASI DARI TEMA DI ATAS --- */
+@keyframes fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
+@keyframes slide-in-right {
+  0% { transform: translateX(50px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes bounce-horizontal {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(25%); }
+}
+
+/* Pengaturan Body Dasar */
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Sembunyikan scrollbar untuk webkit (Chrome, Safari) */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+/* Sembunyikan scrollbar untuk IE, Edge, dan Firefox */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
