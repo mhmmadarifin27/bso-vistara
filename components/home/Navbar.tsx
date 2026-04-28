@@ -33,10 +33,19 @@ export default function Navbar() {
     <nav className="fixed top-0 w-full z-50 bg-white/90 dark:bg-[#0a0a0a]/90 backdrop-blur-md border-b border-gray-100 dark:border-gray-900 transition-colors duration-500">
       <div className="max-w-7xl mx-auto px-6 md:px-12 h-20 flex justify-between items-center">
         
-        {/* Logo - Diubah ke /login sebagai jalur rahasia Admin */}
+       {/* Logo - Diubah ke /login sebagai jalur rahasia Admin */}
         <Link href="/login" className="flex items-center gap-3 group">
-          <div className="bg-[#800000] text-white font-bold p-2 rounded-sm text-xl tracking-wider group-hover:scale-105 transition-transform duration-300">V</div>
-          <span className="font-extrabold text-2xl tracking-[0.2em] text-slate-900 dark:text-white">VISTARA</span>
+          {/* Gambar Logo Asli Vistara */}
+          <img 
+            src="/logo vistara.png" 
+            alt="Logo Vistara" 
+            className="w-10 h-10 md:w-12 md:h-12 object-contain group-hover:scale-105 transition-transform duration-300" 
+          />
+          
+          {/* Teks VISTARA (Hapus bagian <span> ini jika di dalam gambar logomu sudah ada tulisan Vistara-nya) */}
+          <span className="font-extrabold text-2xl tracking-[0.2em] text-[#800000] dark:text-white">
+            VISTARA
+          </span>
         </Link>
 
         {/* Desktop Nav */}
