@@ -1,6 +1,15 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  // Logika untuk menyembunyikan Footer di halaman login dan admin
+  if (pathname?.startsWith('/admin') || pathname?.startsWith('/login')) {
+    return null;
+  }
   return (
     <footer className="relative w-full overflow-hidden bg-[#050505] text-white pt-20 pb-8 border-t-4 border-[#800000]">
       
