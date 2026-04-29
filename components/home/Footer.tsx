@@ -10,38 +10,40 @@ export default function Footer() {
   if (pathname?.startsWith('/admin') || pathname?.startsWith('/login')) {
     return null;
   }
+  
   return (
-    <footer className="relative w-full overflow-hidden bg-[#050505] text-white pt-20 pb-8 border-t-4 border-[#800000]">
+    <footer className="relative w-full overflow-hidden bg-[#050505] text-white pt-24 pb-12 border-t-4 border-[#800000]">
       
-      {/* 1. Background Image Dummy dengan Overlay Gelap */}
+      {/* 1. Background Image Asli Vistara dengan Overlay Cinematic */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="https://images.unsplash.com/photo-1577563908411-5077b6dc7624?q=80&w=2070&auto=format&fit=crop" 
+          src="/footer-bg.png" // Menggunakan gambar gapura asli yang baru
           alt="Vistara Background" 
-          className="w-full h-full object-cover opacity-30"
+          className="w-full h-full object-cover opacity-60 scale-105 animate-slow-zoom" // object-cover memastikan pas di semua ukuran
         />
-        {/* Overlay gradien agar teks tetap terbaca tajam */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/90 to-[#0a0a0a]/80"></div>
+        {/* Overlay gradien kompleks agar teks tetap tajam dan terbaca */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-[#050505]/60 to-[#0a0a0a]"></div>
       </div>
 
       {/* 2. Konten Footer Utama */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-24 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-16 lg:gap-24 mb-20">
           
           {/* Kolom 1: Brand & Deskripsi */}
           <div className="flex flex-col gap-6">
             <div className="flex items-center gap-3">
-              <div className="bg-[#800000] text-white font-bold p-2 rounded-lg text-2xl shadow-lg">V</div>
+              {/* Logo Dummy V (Saran: Ganti pake logo asli /logo.png klo udh ada di public) */}
+              <div className="bg-[#800000] text-white font-bold p-3 rounded-xl text-3xl shadow-xl">V</div>
               <div>
-                <h3 className="font-black text-2xl tracking-[0.2em] uppercase">VISTARA</h3>
-                <p className="text-[#ff4d4d] text-xs font-bold tracking-widest uppercase">Organisasi Pergerakan</p>
+                <h3 className="font-black text-3xl tracking-[0.2em] uppercase">VISTARA</h3>
+                <p className="text-[#ff4d4d] text-xs font-bold tracking-[0.3em] uppercase">Lembaga Pergerakan</p>
               </div>
             </div>
-            <p className="text-gray-300 leading-relaxed text-sm md:text-base">
+            <p className="text-gray-300 leading-relaxed text-sm md:text-base font-medium">
               Lembaga yang berdedikasi melahirkan generasi pemimpin masa depan yang inovatif, beradab, dan berwawasan global melalui kolaborasi strategis.
             </p>
             
-            {/* Social Media Icons (Gaya Kotak Outline) */}
+            {/* Social Media Icons */}
             <div className="flex gap-4 mt-2">
               <a href="#" className="p-3 border border-white/20 rounded-xl hover:bg-[#800000] hover:border-[#800000] transition-all duration-300 group">
                 <svg className="w-5 h-5 text-gray-300 group-hover:text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -58,55 +60,55 @@ export default function Footer() {
 
           {/* Kolom 2: Tautan Cepat */}
           <div>
-            <h4 className="text-[#ff4d4d] font-bold tracking-[0.2em] text-sm uppercase mb-6">Tautan Cepat</h4>
-            <ul className="space-y-4">
+            <h4 className="text-[#ff4d4d] font-bold tracking-[0.3em] text-xs uppercase mb-8">Eksplorasi</h4>
+            <ul className="space-y-5">
               {[
                 { name: "Beranda", path: "/" },
                 { name: "Tentang Kami", path: "/tentang-kami" },
-                { name: "Program Kerja", path: "#" },
-                { name: "Dokumentasi", path: "/#dokumentasi" },
-                { name: "Kemitraan", path: "/contact" }
+                { name: "Agenda Kegiatan", path: "/#dokumentasi" },
+                { name: "Hubungi PR", path: "/contact" },
+                { name: "Gabung Anggota", path: "/#gabung" }
               ].map((link, i) => (
                 <li key={i}>
-                  <Link href={link.path} className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors group">
-                    <svg className="w-4 h-4 text-[#800000] group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M9 5l7 7-7 7" />
+                  <Link href={link.path} className="flex items-center gap-3 text-gray-300 hover:text-white transition-all group">
+                    <svg className="w-5 h-5 text-[#800000] group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
-                    {link.name}
+                    <span className="font-medium text-base">{link.name}</span>
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Kolom 3: Hubungi Kami (Glassmorphism Cards) */}
+          {/* Kolom 3: Hubungi Kami (Cinematic Cards) */}
           <div>
-            <h4 className="text-[#ff4d4d] font-bold tracking-[0.2em] text-sm uppercase mb-6">Hubungi Kami</h4>
-            <div className="space-y-4">
+            <h4 className="text-[#ff4d4d] font-bold tracking-[0.3em] text-xs uppercase mb-8">Pintu Kolaborasi</h4>
+            <div className="space-y-5">
               
               {/* Card Telepon */}
-              <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-colors">
-                <div className="p-3 bg-[#800000]/20 rounded-xl border border-[#800000]/30">
-                  <svg className="w-6 h-6 text-[#ff4d4d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="flex items-center gap-5 p-5 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md hover:bg-white/10 transition-colors">
+                <div className="p-3 bg-[#800000]/20 rounded-xl border border-[#800000]/30 shadow-inner">
+                  <svg className="w-7 h-7 text-[#ff4d4d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                   </svg>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-400 font-bold tracking-widest uppercase mb-1">Telepon</p>
-                  <p className="font-bold text-lg">+62 812-3456-7890</p>
+                  <p className="text-xs text-gray-400 font-bold tracking-[0.2em] uppercase mb-1">Telepon (WA)</p>
+                  <p className="font-black text-xl text-white tracking-tight">+62 812-3456-7890</p>
                 </div>
               </div>
 
               {/* Card Email */}
-              <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-colors">
-                <div className="p-3 bg-[#800000]/20 rounded-xl border border-[#800000]/30">
-                  <svg className="w-6 h-6 text-[#ff4d4d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="flex items-center gap-5 p-5 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md hover:bg-white/10 transition-colors">
+                <div className="p-3 bg-[#800000]/20 rounded-xl border border-[#800000]/30 shadow-inner">
+                  <svg className="w-7 h-7 text-[#ff4d4d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-400 font-bold tracking-widest uppercase mb-1">Email</p>
-                  <p className="font-bold text-lg">info@vistara.org</p>
+                  <p className="text-xs text-gray-400 font-bold tracking-[0.2em] uppercase mb-1">Email Resmi</p>
+                  <p className="font-black text-xl text-white tracking-tight">admin@vistara.org</p>
                 </div>
               </div>
 
@@ -116,12 +118,18 @@ export default function Footer() {
         </div>
 
         {/* 3. Bottom Bar / Copyright */}
-        <div className="pt-8 border-t border-white/10 text-center flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs font-bold tracking-widest text-gray-500 uppercase">
-            © 2026 VISTARA. ALL RIGHTS RESERVED.
+        <div className="pt-10 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6">
+          <p className="text-xs font-bold tracking-[0.4em] text-gray-500 uppercase">
+            © 2026 VISTARA. All Rights Reserved.
           </p>
+          <div className="flex items-center gap-6 text-gray-400 text-xs font-bold tracking-widest">
+            <span>Privasi</span>
+            <span className="w-1.5 h-1.5 bg-[#800000] rounded-full"></span>
+            <span>Syarat & Ketentuan</span>
+          </div>
         </div>
       </div>
-    </footer>
+    
+  </footer>
   );
 }

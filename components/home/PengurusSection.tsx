@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
+import { supabase } from "@/utils/supabase";
 
 // 1. Komponen Khusus untuk Frame Divisi (Animasi Bergantian)
 const AnimatedDivisiCard = ({ 
@@ -17,11 +18,16 @@ const AnimatedDivisiCard = ({
 
   // Auto-ganti foto setiap 3 detik
   useEffect(() => {
+    // Hindari error kalau data kosong
+    if (!images || images.length === 0) return; 
+    
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % images.length);
     }, 3000);
     return () => clearInterval(timer);
-  }, [images.length]);
+  }, [images?.length]);
+
+  if (!images || images.length === 0) return null;
 
   return (
     <div className="relative w-72 h-96 flex-shrink-0 rounded-[2rem] overflow-hidden group shadow-lg border border-gray-100 dark:border-gray-800 bg-white dark:bg-[#111]">
@@ -56,92 +62,98 @@ const AnimatedDivisiCard = ({
   );
 };
 
-// 2. Main Section Component (Ini yang diekspor ke Beranda)
+// 2. Main Section Component
 export default function PengurusSection() {
-  // Tambahan: Ref untuk container scroll
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   
-  // Data 4 BPH Inti (Statis)
-  const bphInti = [
-    { role: "Ketua Umum", name: "Andi Pratama", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&q=80" },
-    { role: "Wakil Ketua", name: "Budi Santoso", img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=500&q=80" },
-    { role: "Sekretaris", name: "Siti Rahma", img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500&q=80" },
-    { role: "Bendahara", name: "Nisa Kamila", img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=500&q=80" },
-  ];
+  // State untuk menampung data dari database
+  const [bphInti, setBphInti] = useState<any[]>([]);
+  const [divisiData, setDivisiData] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Data 5 Divisi (Animasi)
-  const divisiData = [
-    {
-      divisiName: "Divisi PR",
-      images: [
-        "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=500&q=80", // Tim PR
-        "https://images.unsplash.com/photo-1560250097001-sgb28f1b6a12?w=500&q=80", // Kadiv
-        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&q=80", // Wakadiv
-      ],
-      roles: ["Full Team", "Ketua Divisi", "Wakil Ketua"],
-      names: ["Keluarga PR", "Muhammad Arifin", "Aisyah Putri"]
-    },
-    {
-      divisiName: "Divisi Kreatif",
-      images: [
-        "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=500&q=80",
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=500&q=80",
-        "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=500&q=80",
-      ],
-      roles: ["Full Team", "Ketua Divisi", "Wakil Ketua"],
-      names: ["Tim Kreatif", "Reza Fahlevi", "Diana Sari"]
-    },
-    {
-      divisiName: "Divisi Event",
-      images: [
-        "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=500&q=80",
-        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&q=80",
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=500&q=80",
-      ],
-      roles: ["Full Team", "Ketua Divisi", "Wakil Ketua"],
-      names: ["Tim Event", "Dimas Anggara", "Rina Melati"]
-    },
-    {
-      divisiName: "Divisi HRD",
-      images: [
-        "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=500&q=80",
-        "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=500&q=80",
-        "https://images.unsplash.com/photo-1531123897727-8f129e1bfa82?w=500&q=80",
-      ],
-      roles: ["Full Team", "Ketua Divisi", "Wakil Ketua"],
-      names: ["Tim HRD", "Fajar Nugraha", "Lestari"]
-    },
-    {
-      divisiName: "Divisi IT",
-      images: [
-        "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=500&q=80",
-        "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=500&q=80",
-        "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=500&q=80",
-      ],
-      roles: ["Full Team", "Ketua Divisi", "Wakil Ketua"],
-      names: ["Tim IT Dev", "Bayu Pratama", "Nadia Vega"]
-    }
-  ];
+  useEffect(() => {
+    const fetchPengurus = async () => {
+      // 1. Ambil data bingkai (frames)
+      // Asumsi ada kolom 'category' isinya "BPH" atau "Divisi"
+      const { data: frames, error: errorFrames } = await supabase
+        .from('pengurus_frames')
+        .select('*')
+        .order('created_at', { ascending: true });
 
-  // Tambahan: Logika Auto-Scroll
+      // 2. Ambil data orangnya (members)
+      const { data: members, error: errorMembers } = await supabase
+        .from('pengurus_members')
+        .select('*')
+        .order('created_at', { ascending: true });
+
+      if (frames && members) {
+        const tempBph: any[] = [];
+        const tempDivisi: any[] = [];
+
+        frames.forEach((frame) => {
+          // Cari orang-orang yang frame_id nya sama dengan id bingkai ini
+          const frameMembers = members.filter((m) => m.frame_id === frame.id);
+
+          // Cek ini bingkai BPH atau Divisi (Sesuaikan dengan nama kolom di databasemu)
+          // Asumsi nama kolomnya 'is_divisi' (boolean) atau 'category' (string)
+          // Di sini saya asumsikan pakai kolom string 'category' = 'divisi'
+          if (frame.category === 'divisi' || frame.is_divisi === true) {
+            if (frameMembers.length > 0) {
+              tempDivisi.push({
+                divisiName: frame.title,
+                images: frameMembers.map((m) => m.image_url),
+                roles: frameMembers.map((m) => m.role),
+                names: frameMembers.map((m) => m.name)
+              });
+            }
+          } else {
+            // Ini untuk BPH Inti (Statis 1 orang)
+            if (frameMembers.length > 0) {
+              tempBph.push({
+                role: frameMembers[0].role || frame.title,
+                name: frameMembers[0].name,
+                img: frameMembers[0].image_url
+              });
+            }
+          }
+        });
+
+        setBphInti(tempBph);
+        setDivisiData(tempDivisi);
+      }
+      
+      setIsLoading(false);
+    };
+
+    fetchPengurus();
+  }, []);
+
+  // Logika Auto-Scroll
   useEffect(() => {
     const container = scrollContainerRef.current;
-    if (!container) return;
+    if (!container || isLoading) return; // Tunggu loading selesai
 
     const scrollInterval = setInterval(() => {
-      // Cek apakah scroll sudah mencapai ujung kanan (mentok)
-      // (dikurangi sedikit pixel untuk antisipasi pembulatan desimal browser)
       if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 10) {
-        // Jika mentok, scroll mulus kembali ke ujung kiri (awal)
         container.scrollTo({ left: 0, behavior: "smooth" });
       } else {
-        // Geser ke kanan sejauh lebar 1 card (sekitar 320px termasuk gap)
         container.scrollBy({ left: 320, behavior: "smooth" });
       }
-    }, 3500); // Menggeser otomatis setiap 3.5 detik
+    }, 3500);
 
     return () => clearInterval(scrollInterval);
-  }, []);
+  }, [isLoading]);
+
+  if (isLoading) {
+    return (
+      <div className="py-24 bg-[#f8f9fa] dark:bg-[#050505] flex justify-center">
+        <div className="w-8 h-8 border-2 border-[#800000] border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  // Jika data database masih benar-benar kosong, sembunyikan section-nya
+  if (bphInti.length === 0 && divisiData.length === 0) return null;
 
   return (
     <section id="pengurus" className="py-24 bg-[#f8f9fa] dark:bg-[#050505] overflow-hidden transition-colors duration-500">
@@ -164,13 +176,13 @@ export default function PengurusSection() {
         </div>
       </div>
 
-      {/* Container Carousel - Scroll menyamping dengan penambahan ref */}
+      {/* Container Carousel */}
       <div 
         ref={scrollContainerRef} 
         className="flex gap-6 overflow-x-auto pb-10 px-6 md:px-12 snap-x snap-mandatory hide-scrollbar"
       >
         
-        {/* Render 4 Frame Statis BPH Inti */}
+        {/* Render Frame BPH Inti */}
         {bphInti.map((bph, index) => (
           <div key={`bph-${index}`} className="relative w-72 h-96 flex-shrink-0 rounded-[2rem] overflow-hidden snap-center group shadow-lg border border-gray-100 dark:border-gray-800">
             <img src={bph.img} alt={bph.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"/>
@@ -186,11 +198,13 @@ export default function PengurusSection() {
         ))}
 
         {/* Garis Pemisah Visual antara BPH Inti dan Divisi */}
-        <div className="hidden md:flex flex-shrink-0 items-center justify-center w-12 snap-center">
-          <div className="w-[2px] h-32 bg-gray-300 dark:bg-gray-800 rounded-full"></div>
-        </div>
+        {bphInti.length > 0 && divisiData.length > 0 && (
+          <div className="hidden md:flex flex-shrink-0 items-center justify-center w-12 snap-center">
+            <div className="w-[2px] h-32 bg-gray-300 dark:bg-gray-800 rounded-full"></div>
+          </div>
+        )}
 
-        {/* Render 5 Frame Divisi yang Animasinya Bergantian */}
+        {/* Render Frame Divisi yang Animasinya Bergantian */}
         {divisiData.map((div, index) => (
           <div key={`div-${index}`} className="snap-center">
              <AnimatedDivisiCard 

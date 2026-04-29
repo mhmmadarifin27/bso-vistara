@@ -31,7 +31,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const menuItems = [
     { name: "Dashboard Overview", path: "/admin", icon: "📊" },
-    { name: "Struktur BPH", path: "/admin/bph", icon: "👥" },
+    { name: "Struktur BPH", path: "/admin/pengurus", icon: "👥" },
     { name: "Event & Dokumentasi", path: "/admin/events", icon: "📸" },
     { name: "Program Prioritas", path: "/admin/programs", icon: "🎯" },
     { name: "Pesan Kemitraan", path: "/admin/messages", icon: "✉️" },

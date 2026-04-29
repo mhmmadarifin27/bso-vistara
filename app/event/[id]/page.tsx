@@ -38,7 +38,7 @@ export default function EventDetailPage() {
   return (
     <div className="min-h-screen bg-white dark:bg-[#0a0a0a] text-slate-900 dark:text-gray-100 transition-colors duration-500 pt-32 pb-24">
       
-      {/* CONTAINER UTAMA - Sudah disamakan dengan halaman lain (max-w-7xl) */}
+      {/* CONTAINER UTAMA */}
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         
         {/* 1. NAVIGASI BALIK */}
@@ -57,7 +57,7 @@ export default function EventDetailPage() {
               {eventDetail.category || "Dokumentasi"}
             </span>
           </div>
-          <h1 className="text-4xl md:text-7xl font-black uppercase leading-[1.1] tracking-tighter mb-8 max-w-5xl">
+          <h1 className="text-4xl md:text-7xl font-black uppercase leading-[1.1] tracking-tighter mb-8 max-w-full break-words">
             {eventDetail.title}
           </h1>
           <div className="text-sm font-bold text-gray-500 uppercase tracking-widest flex items-center gap-4">
@@ -71,8 +71,8 @@ export default function EventDetailPage() {
           </div>
         </header>
 
-        {/* 3. FRAME GAMBAR UTAMA - Lebar penuh sesuai container 7xl */}
-        <div className="w-full rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden shadow-2xl border border-gray-100 dark:border-gray-900 mb-20">
+        {/* 3. FRAME GAMBAR UTAMA */}
+        <div className="w-full rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden shadow-2xl border border-gray-100 dark:border-gray-900 mb-12">
           <img 
             src={eventDetail.image_url} 
             alt={eventDetail.title} 
@@ -80,27 +80,23 @@ export default function EventDetailPage() {
           />
         </div>
 
-        {/* 4. AREA DESKRIPSI - Tetap dalam grid 7xl tapi teks dikunci lebarnya agar tidak terlalu melar ke samping */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          <div className="lg:col-span-8">
-            <div className="space-y-10">
-              {eventDetail.description ? (
-                eventDetail.description.split('\n').map((paragraf: string, index: number) => (
-                  <p 
-                    key={index} 
-                    className="text-lg md:text-2xl text-slate-600 dark:text-gray-400 leading-relaxed font-medium break-words"
-                  >
-                    {paragraf}
-                  </p>
-                ))
-              ) : (
-                <p className="italic text-gray-400">Deskripsi kegiatan tidak tersedia.</p>
-              )}
-            </div>
+        {/* 4. AREA DESKRIPSI - FIX LEBAR FULL */}
+        <div className="w-full">
+          <div className="space-y-6">
+            {eventDetail.description ? (
+              // Tambahan break-words agar kalau ada link/kata panjang tidak menembus layar
+              eventDetail.description.split('\n').filter((p: string) => p.trim() !== "").map((paragraf: string, index: number) => (
+                <p 
+                  key={index} 
+                  className="text-lg md:text-xl text-slate-600 dark:text-gray-400 leading-[1.8] font-medium break-words text-justify md:text-left"
+                >
+                  {paragraf}
+                </p>
+              ))
+            ) : (
+              <p className="italic text-gray-400">Deskripsi kegiatan tidak tersedia.</p>
+            )}
           </div>
-          
-          {/* Kolom kosong untuk menjaga whitespace agar desain tetap premium & lega */}
-          <div className="hidden lg:block lg:col-span-4"></div>
         </div>
 
       </div>

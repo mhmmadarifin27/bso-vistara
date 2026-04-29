@@ -14,7 +14,7 @@ export default function PilarSection() {
             {/* Container Gambar */}
             <div className="relative z-10 w-full aspect-[4/5] md:aspect-square lg:aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl border border-gray-100 dark:border-gray-800">
               <img 
-                src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=80&w=2070&auto=format&fit=crop" 
+                src="all.png" 
                 alt="Kegiatan Vistara" 
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
               />
