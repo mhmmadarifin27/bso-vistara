@@ -67,11 +67,18 @@ export default function LoginPage() {
           </form>
         </div>
 
-        <div className="text-center mt-8">
-          <Link href="/" className="text-gray-500 text-xs hover:text-white transition-colors uppercase tracking-widest font-bold">
-            ← Kembali ke Beranda Publik
-          </Link>
-        </div>
+        {/* Tombol Back to Home (Kanan Atas) */}
+      <div className="absolute top-6 right-6 md:top-8 md:right-8 z-50">
+        <Link 
+          href="/" 
+          title="Kembali ke Beranda"
+          className="flex items-center justify-center w-12 h-12 bg-white dark:bg-[#111] border border-gray-200 dark:border-gray-800 rounded-full shadow-sm hover:scale-110 hover:shadow-md transition-all group"
+        >
+          <svg className="w-5 h-5 text-gray-500 dark:text-gray-400 group-hover:text-[#800000] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+        </Link>
+      </div>
 
       </div>
     </div>

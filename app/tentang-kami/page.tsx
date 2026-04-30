@@ -190,7 +190,7 @@ export default function TentangKamiPage() {
               <div className="absolute -inset-4 border-2 border-[#800000] rounded-[3rem] group-hover:inset-0 transition-all duration-500"></div>
               <div className="relative h-[400px] md:h-[500px] overflow-hidden rounded-[2.5rem] shadow-2xl">
                 <img 
-                  src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop" 
+                  src="visi.jpeg" 
                   alt="Visi Vistara" 
                   className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
                 />
@@ -212,7 +212,7 @@ export default function TentangKamiPage() {
               <div className="absolute -inset-4 border-2 border-slate-900 dark:border-white rounded-[3rem] group-hover:inset-0 transition-all duration-500"></div>
               <div className="relative h-[400px] md:h-[500px] overflow-hidden rounded-[2.5rem] shadow-2xl">
                 <img 
-                  src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070&auto=format&fit=crop" 
+                  src="misi.jpeg" 
                   alt="Misi Vistara" 
                   className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
                 />
@@ -259,7 +259,7 @@ export default function TentangKamiPage() {
           </p>
         </div>
 
-        {/* TIMELINE WRAPPER */}
+        {/* TIMELINE WRAPPER (VERSI TANPA FOTO) */}
         <div className="relative">
           
           {/* Garis Vertikal (Tulang Punggung Timeline) */}
@@ -267,24 +267,22 @@ export default function TentangKamiPage() {
           {/* Garis vertikal untuk tampilan mobile (di kiri) */}
           <div className="absolute left-8 top-0 bottom-0 w-[2px] bg-gray-200 dark:bg-gray-800 md:hidden"></div>
 
-          <div className="space-y-16 md:space-y-32">
+          <div className="space-y-20 md:space-y-32">
             
             {/* ITEM SEJARAH 1 (Kanan) */}
             <div className="relative flex flex-col md:flex-row justify-between items-center w-full group">
               {/* Titik Tengah */}
               <div className="absolute left-8 md:left-1/2 w-6 h-6 rounded-full bg-[#800000] border-4 border-white dark:border-[#0a0a0a] -translate-x-1/2 z-10 shadow-lg group-hover:scale-150 transition-transform duration-500"></div>
               
-              {/* Konten Kiri (Kosong di Desktop, agar konten di kanan) */}
+              {/* Konten Kiri (Kosong di Desktop) */}
               <div className="hidden md:block w-5/12"></div>
               
-              {/* Konten (Teks & Gambar) */}
+              {/* Konten (Hanya Teks) */}
               <div className="w-full pl-20 md:pl-0 md:w-5/12 flex flex-col md:items-start text-left">
-                <span className="text-[#800000] font-black text-3xl md:text-5xl mb-4 tracking-tighter">2023</span>
-                <h3 className="text-2xl font-black uppercase text-slate-900 dark:text-white mb-4">Awal Mula Vistara</h3>
-                <div className="w-full aspect-video rounded-3xl overflow-hidden mb-6 shadow-xl border border-gray-100 dark:border-gray-800">
-                   <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=2070&auto=format&fit=crop" alt="Awal Mula" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
-                </div>
-                <p className="text-slate-600 dark:text-gray-400 leading-relaxed font-medium">
+                <span className="text-[#800000] font-black text-6xl md:text-8xl mb-2 tracking-tighter opacity-20 absolute -z-10 -translate-y-6 md:-translate-y-8 md:-translate-x-8">2023</span>
+                <span className="text-[#800000] font-black text-4xl md:text-5xl mb-4 tracking-tighter">2023</span>
+                <h3 className="text-3xl font-black uppercase text-slate-900 dark:text-white mb-4">Awal Mula Vistara</h3>
+                <p className="text-lg text-slate-600 dark:text-gray-400 leading-relaxed font-medium">
                   Berawal dari diskusi kecil di Fakultas Sains dan Teknologi UIN Raden Fatah, sekelompok mahasiswa memiliki visi yang sama untuk membentuk wadah pergerakan dan kreativitas.
                 </p>
               </div>
@@ -298,14 +296,12 @@ export default function TentangKamiPage() {
               {/* Konten Kanan (Kosong di Desktop) */}
               <div className="hidden md:block w-5/12"></div>
               
-              {/* Konten (Teks & Gambar) */}
-              <div className="w-full pl-20 md:pl-0 md:w-5/12 flex flex-col md:items-end text-left md:text-right">
-                <span className="text-slate-400 font-black text-3xl md:text-5xl mb-4 tracking-tighter group-hover:text-[#800000] transition-colors duration-500">2024</span>
-                <h3 className="text-2xl font-black uppercase text-slate-900 dark:text-white mb-4">Deklarasi & Peresmian</h3>
-                <div className="w-full aspect-video rounded-3xl overflow-hidden mb-6 shadow-xl border border-gray-100 dark:border-gray-800">
-                   <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070&auto=format&fit=crop" alt="Deklarasi" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
-                </div>
-                <p className="text-slate-600 dark:text-gray-400 leading-relaxed font-medium">
+              {/* Konten (Hanya Teks) */}
+              <div className="w-full pl-20 md:pl-0 md:w-5/12 flex flex-col md:items-end text-left md:text-right relative">
+                 <span className="text-slate-400 font-black text-6xl md:text-8xl mb-2 tracking-tighter opacity-10 absolute -z-10 -translate-y-6 md:-translate-y-8 md:translate-x-8 group-hover:text-[#800000] group-hover:opacity-20 transition-all duration-500">2024</span>
+                <span className="text-slate-400 font-black text-4xl md:text-5xl mb-4 tracking-tighter group-hover:text-[#800000] transition-colors duration-500">2024</span>
+                <h3 className="text-3xl font-black uppercase text-slate-900 dark:text-white mb-4">Deklarasi & Peresmian</h3>
+                <p className="text-lg text-slate-600 dark:text-gray-400 leading-relaxed font-medium">
                   Vistara resmi dibentuk secara struktural. Identitas organisasi mulai dibangun dengan fokus pada keseimbangan seni, budaya, dan inovasi teknologi bagi para pemuda.
                 </p>
               </div>
@@ -319,14 +315,12 @@ export default function TentangKamiPage() {
               {/* Konten Kiri (Kosong di Desktop) */}
               <div className="hidden md:block w-5/12"></div>
               
-              {/* Konten (Teks & Gambar) */}
-              <div className="w-full pl-20 md:pl-0 md:w-5/12 flex flex-col md:items-start text-left">
-                <span className="text-slate-400 font-black text-3xl md:text-5xl mb-4 tracking-tighter group-hover:text-[#800000] transition-colors duration-500">2025</span>
-                <h3 className="text-2xl font-black uppercase text-slate-900 dark:text-white mb-4">Ekspansi Kolaborasi</h3>
-                <div className="w-full aspect-video rounded-3xl overflow-hidden mb-6 shadow-xl border border-gray-100 dark:border-gray-800">
-                   <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=2070&auto=format&fit=crop" alt="Kolaborasi" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
-                </div>
-                <p className="text-slate-600 dark:text-gray-400 leading-relaxed font-medium">
+              {/* Konten (Hanya Teks) */}
+              <div className="w-full pl-20 md:pl-0 md:w-5/12 flex flex-col md:items-start text-left relative">
+                 <span className="text-slate-400 font-black text-6xl md:text-8xl mb-2 tracking-tighter opacity-10 absolute -z-10 -translate-y-6 md:-translate-y-8 md:-translate-x-8 group-hover:text-[#800000] group-hover:opacity-20 transition-all duration-500">2025</span>
+                <span className="text-slate-400 font-black text-4xl md:text-5xl mb-4 tracking-tighter group-hover:text-[#800000] transition-colors duration-500">2025</span>
+                <h3 className="text-3xl font-black uppercase text-slate-900 dark:text-white mb-4">Ekspansi Kolaborasi</h3>
+                <p className="text-lg text-slate-600 dark:text-gray-400 leading-relaxed font-medium">
                   Tahun ini menjadi tonggak sejarah dengan diluncurkannya sistem CMS digital dan meluasnya jaringan media partnership yang menjangkau lebih dari sekadar lingkup kampus.
                 </p>
               </div>

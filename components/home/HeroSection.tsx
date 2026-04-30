@@ -6,7 +6,8 @@ export default function HeroSection() {
   // Daftar URL gambar untuk Slideshow (Silakan ganti dengan foto asli kegiatan Vistara)
   const images = [
     "logo vistara.png", // Gambar 1
-    "all.png", // Gambar 2
+    "all.png",
+    "foto4.jpeg", // Gambar 2
     "foto3.jpg"  // Gambar 3
   ];
 

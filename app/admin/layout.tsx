@@ -111,11 +111,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             {/* Profil Admin */}
             <div className="flex items-center gap-3 border-l pl-6 border-gray-200 dark:border-gray-800">
               <div className="text-right hidden md:block">
-                <p className="text-xs font-black uppercase tracking-widest text-slate-900 dark:text-white">Admin PR</p>
-                <p className="text-[10px] text-green-500 font-bold uppercase tracking-widest">● Online</p>
+                <p className="text-xs font-black uppercase tracking-widest text-slate-900 dark:text-white">Admin Vistara</p>
               </div>
-              <div className="w-10 h-10 bg-slate-200 dark:bg-[#111] rounded-full overflow-hidden border-2 border-[#800000]">
-                <img src="https://images.unsplash.com/photo-1560250097001-sgb28f1b6a12?w=100&q=80" alt="Admin" className="w-full h-full object-cover"/>
+              <div className="w-10 h-10 bg-slate-0 dark:bg-[#111] rounded-full overflow-hidden ">
+                <img src="logo vistara.png" alt="Admin" className="w-full h-full object-cover"/>
               </div>
             </div>
           </div>
