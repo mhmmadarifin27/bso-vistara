@@ -59,8 +59,13 @@ export default function LoginPage() {
       <div className="w-full max-w-md p-8 relative z-10 animate-fade-in">
         
         <div className="text-center mb-10">
-          <Link href="/" className="inline-block bg-[#800000] text-white font-bold p-3 rounded-xl text-3xl shadow-lg mb-4 hover:scale-105 transition-transform">
-            V
+          {/* Logo Vistara Berupa Gambar */}
+          <Link href="/" className="mx-auto w-20 h-20 bg-[#111] dark:bg-black rounded-2xl border border-[#800000]/30 p-3 shadow-2xl shadow-[#800000]/20 flex items-center justify-center mb-6 group hover:scale-105 hover:shadow-[#800000]/40 transition-all duration-300">
+            <img 
+              src="/logo vistara.png" // Pastikan nama file ini sesuai dengan yang ada di folder public kamu
+              alt="Logo Vistara" 
+              className="w-full h-full object-contain drop-shadow-md group-hover:brightness-110 transition-all" 
+            />
           </Link>
           <h1 className="text-3xl font-black text-white tracking-widest uppercase">Vistara Portal</h1>
           <p className="text-gray-500 text-sm mt-2 font-medium">Restricted Access. Authorized Personnel Only.</p>

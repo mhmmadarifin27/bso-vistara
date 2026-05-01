@@ -66,27 +66,26 @@ const AnimatedDivisiCard = ({
 export default function PengurusSection() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   
-  // State untuk menampung data dari database
+  // State untuk menampung data dari database (Ditambah state untuk Pembina)
+  const [pembinaData, setPembinaData] = useState<any[]>([]);
   const [bphInti, setBphInti] = useState<any[]>([]);
   const [divisiData, setDivisiData] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchPengurus = async () => {
-      // 1. Ambil data bingkai (frames)
-      // Asumsi ada kolom 'category' isinya "BPH" atau "Divisi"
       const { data: frames, error: errorFrames } = await supabase
         .from('pengurus_frames')
         .select('*')
         .order('created_at', { ascending: true });
 
-      // 2. Ambil data orangnya (members)
       const { data: members, error: errorMembers } = await supabase
         .from('pengurus_members')
         .select('*')
         .order('created_at', { ascending: true });
 
       if (frames && members) {
+        const tempPembina: any[] = [];
         const tempBph: any[] = [];
         const tempDivisi: any[] = [];
 
@@ -94,30 +93,41 @@ export default function PengurusSection() {
           // Cari orang-orang yang frame_id nya sama dengan id bingkai ini
           const frameMembers = members.filter((m) => m.frame_id === frame.id);
 
-          // Cek ini bingkai BPH atau Divisi (Sesuaikan dengan nama kolom di databasemu)
-          // Asumsi nama kolomnya 'is_divisi' (boolean) atau 'category' (string)
-          // Di sini saya asumsikan pakai kolom string 'category' = 'divisi'
-          if (frame.category === 'divisi' || frame.is_divisi === true) {
-            if (frameMembers.length > 0) {
+          if (frameMembers.length > 0) {
+            // JALUR 1: Kategori PEMBINA (Kasta Tertinggi)
+            if (frame.category === 'pembina') {
+              frameMembers.forEach((m) => {
+                tempPembina.push({
+                  role: m.role || frame.title,
+                  name: m.name,
+                  img: m.image_url,
+                  badge: frame.title
+                });
+              });
+            } 
+            // JALUR 2: Kategori DIVISI (Animasi Bergerak)
+            else if (frame.category === 'divisi' || frame.is_divisi === true) {
               tempDivisi.push({
                 divisiName: frame.title,
                 images: frameMembers.map((m) => m.image_url),
                 roles: frameMembers.map((m) => m.role),
                 names: frameMembers.map((m) => m.name)
               });
-            }
-          } else {
-            // Ini untuk BPH Inti (Statis 1 orang)
-            if (frameMembers.length > 0) {
-              tempBph.push({
-                role: frameMembers[0].role || frame.title,
-                name: frameMembers[0].name,
-                img: frameMembers[0].image_url
+            } 
+            // JALUR 3: Kategori BPH (Atau data lama yang belum diset)
+            else {
+              frameMembers.forEach((m) => {
+                tempBph.push({
+                  role: m.role || frame.title,
+                  name: m.name,
+                  img: m.image_url
+                });
               });
             }
           }
         });
 
+        setPembinaData(tempPembina);
         setBphInti(tempBph);
         setDivisiData(tempDivisi);
       }
@@ -131,7 +141,7 @@ export default function PengurusSection() {
   // Logika Auto-Scroll
   useEffect(() => {
     const container = scrollContainerRef.current;
-    if (!container || isLoading) return; // Tunggu loading selesai
+    if (!container || isLoading) return; 
 
     const scrollInterval = setInterval(() => {
       if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 10) {
@@ -152,8 +162,8 @@ export default function PengurusSection() {
     );
   }
 
-  // Jika data database masih benar-benar kosong, sembunyikan section-nya
-  if (bphInti.length === 0 && divisiData.length === 0) return null;
+  // Jika semua data database kosong, sembunyikan section-nya
+  if (pembinaData.length === 0 && bphInti.length === 0 && divisiData.length === 0) return null;
 
   return (
     <section id="pengurus" className="py-24 bg-[#f8f9fa] dark:bg-[#050505] overflow-hidden transition-colors duration-500">
@@ -182,7 +192,29 @@ export default function PengurusSection() {
         className="flex gap-6 overflow-x-auto pb-10 px-6 md:px-12 snap-x snap-mandatory hide-scrollbar"
       >
         
-        {/* Render Frame BPH Inti */}
+        {/* 1. RENDER FRAME PEMBINA (Paling Depan!) */}
+        {pembinaData.map((pembina, index) => (
+          <div key={`pembina-${index}`} className="relative w-72 h-96 flex-shrink-0 rounded-[2rem] overflow-hidden snap-center group shadow-lg border border-purple-100 dark:border-purple-900/50">
+            <img src={pembina.img} alt={pembina.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"/>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+            <div className="absolute bottom-0 left-0 p-6 text-white w-full">
+               <div className="bg-purple-600/80 backdrop-blur-sm border border-purple-400/30 text-[10px] font-bold px-3 py-1 inline-block rounded-full mb-3 uppercase tracking-widest text-white shadow-md">
+                {pembina.badge || "Dewan Pembina"}
+              </div>
+              <p className="text-purple-300 font-bold text-xs tracking-widest uppercase mb-1">{pembina.role}</p>
+              <h3 className="text-xl font-black">{pembina.name}</h3>
+            </div>
+          </div>
+        ))}
+
+        {/* Garis Pemisah Visual antara Pembina dan BPH Inti */}
+        {pembinaData.length > 0 && (bphInti.length > 0 || divisiData.length > 0) && (
+          <div className="hidden md:flex flex-shrink-0 items-center justify-center w-8 snap-center">
+            <div className="w-[2px] h-32 bg-gray-300 dark:bg-gray-800 rounded-full"></div>
+          </div>
+        )}
+
+        {/* 2. RENDER FRAME BPH INTI (Tengah) */}
         {bphInti.map((bph, index) => (
           <div key={`bph-${index}`} className="relative w-72 h-96 flex-shrink-0 rounded-[2rem] overflow-hidden snap-center group shadow-lg border border-gray-100 dark:border-gray-800">
             <img src={bph.img} alt={bph.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"/>
@@ -199,12 +231,12 @@ export default function PengurusSection() {
 
         {/* Garis Pemisah Visual antara BPH Inti dan Divisi */}
         {bphInti.length > 0 && divisiData.length > 0 && (
-          <div className="hidden md:flex flex-shrink-0 items-center justify-center w-12 snap-center">
+          <div className="hidden md:flex flex-shrink-0 items-center justify-center w-8 snap-center">
             <div className="w-[2px] h-32 bg-gray-300 dark:bg-gray-800 rounded-full"></div>
           </div>
         )}
 
-        {/* Render Frame Divisi yang Animasinya Bergantian */}
+        {/* 3. RENDER FRAME DIVISI (Paling Kanan / Belakang) */}
         {divisiData.map((div, index) => (
           <div key={`div-${index}`} className="snap-center">
              <AnimatedDivisiCard 

@@ -149,13 +149,29 @@ export default function AdminPengurusPage() {
   };
 
   // ==========================================
+  // FUNGSI WARNA BADGE KATEGORI
+  // ==========================================
+  const getCategoryBadge = (category: string) => {
+    switch (category) {
+      case 'pembina':
+        return 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400';
+      case 'bph':
+        return 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400';
+      case 'divisi':
+        return 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400';
+      default:
+        return 'bg-gray-100 text-gray-700';
+    }
+  };
+
+  // ==========================================
   // TAMPILAN UI
   // ==========================================
   return (
     <div className="animate-fade-in pb-20">
       <div className="mb-8">
         <h2 className="text-3xl font-black uppercase text-slate-900 dark:text-white">Kelola Struktur Pengurus</h2>
-        <p className="text-slate-500 mt-2">Atur bingkai BPH/Divisi, lalu masukkan anggota ke dalamnya.</p>
+        <p className="text-slate-500 mt-2">Atur bingkai Pembina/BPH/Divisi, lalu masukkan anggota ke dalamnya.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
@@ -163,20 +179,22 @@ export default function AdminPengurusPage() {
         {/* KOLOM 1: KELOLA BINGKAI (FRAMES) */}
         <div className="bg-white dark:bg-[#111] p-6 rounded-[2rem] border border-gray-100 dark:border-gray-800 shadow-sm">
           <h3 className="text-lg font-bold uppercase mb-4 border-b pb-4 dark:border-gray-800">
-            {editingFrameId ? "1. Edit Bingkai" : "1. Buat Bingkai (BPH/Divisi)"}
+            {editingFrameId ? "1. Edit Bingkai" : "1. Buat Bingkai (Struktur)"}
           </h3>
           <form onSubmit={handleSaveFrame} className="space-y-4 mb-8">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="text-xs font-bold uppercase text-gray-500">Kategori</label>
+                <label className="text-xs font-bold uppercase text-gray-500">Kategori Hierarki</label>
                 <select required value={frameData.category} onChange={(e) => setFrameData({...frameData, category: e.target.value})} className="w-full mt-1 bg-slate-50 dark:bg-black border border-gray-200 dark:border-gray-800 rounded-xl px-4 py-2 text-slate-900 dark:text-white">
-                  <option value="bph">BPH Inti (Statis)</option>
-                  <option value="divisi">Divisi (Animasi Bergantian)</option>
+                  {/* Tambahan Opsi Pembina */}
+                  <option value="pembina">Dewan Pembina (Puncak)</option>
+                  <option value="bph">BPH Inti (Tengah)</option>
+                  <option value="divisi">Divisi (Sayap Animasi)</option>
                 </select>
               </div>
               <div>
                 <label className="text-xs font-bold uppercase text-gray-500">Nama Bingkai</label>
-                <input required type="text" placeholder="Cth: Ketua Umum / Divisi PR" value={frameData.title} onChange={(e) => setFrameData({...frameData, title: e.target.value})} className="w-full mt-1 bg-slate-50 dark:bg-black border border-gray-200 dark:border-gray-800 rounded-xl px-4 py-2 text-slate-900 dark:text-white" />
+                <input required type="text" placeholder="Cth: Pembina / Ketua Umum" value={frameData.title} onChange={(e) => setFrameData({...frameData, title: e.target.value})} className="w-full mt-1 bg-slate-50 dark:bg-black border border-gray-200 dark:border-gray-800 rounded-xl px-4 py-2 text-slate-900 dark:text-white" />
               </div>
             </div>
 
@@ -197,8 +215,11 @@ export default function AdminPengurusPage() {
             {frames.map((frame) => (
               <div key={frame.id} className="flex justify-between items-center bg-slate-50 dark:bg-black p-3 rounded-xl border border-gray-100 dark:border-gray-800">
                 <div>
-                  <span className={`text-[10px] px-2 py-0.5 rounded uppercase font-bold mr-2 ${frame.category === 'bph' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'}`}>{frame.category}</span>
-                  <span className="font-bold text-sm">{frame.title}</span>
+                  {/* Gunakan fungsi getCategoryBadge untuk mewarnai label */}
+                  <span className={`text-[10px] px-2 py-0.5 rounded uppercase font-bold mr-2 ${getCategoryBadge(frame.category)}`}>
+                    {frame.category}
+                  </span>
+                  <span className="font-bold text-sm text-slate-900 dark:text-white">{frame.title}</span>
                 </div>
                 <div className="flex gap-3">
                   <button onClick={() => startEditFrame(frame)} className="text-blue-500 text-xs font-bold hover:underline">Edit</button>
@@ -212,7 +233,7 @@ export default function AdminPengurusPage() {
         {/* KOLOM 2: KELOLA ANGGOTA (MEMBERS) */}
         <div className="bg-white dark:bg-[#111] p-6 rounded-[2rem] border border-gray-100 dark:border-gray-800 shadow-sm">
           <h3 className="text-lg font-bold uppercase mb-4 border-b pb-4 dark:border-gray-800">
-            {editingMemberId ? "2. Edit Data Anggota" : "2. Tambah Anggota ke Bingkai"}
+            {editingMemberId ? "2. Edit Data Anggota/Pembina" : "2. Tambah Anggota ke Bingkai"}
           </h3>
           <form onSubmit={handleSaveMember} className="space-y-4 mb-8">
             <div>
@@ -226,11 +247,11 @@ export default function AdminPengurusPage() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="text-xs font-bold uppercase text-gray-500">Nama Lengkap</label>
-                <input required type="text" value={memberData.name} onChange={(e) => setMemberData({...memberData, name: e.target.value})} className="w-full mt-1 bg-slate-50 dark:bg-black border border-gray-200 dark:border-gray-800 rounded-xl px-4 py-2 text-slate-900 dark:text-white" />
+                <input required type="text" placeholder="Bapak Dr. John Doe" value={memberData.name} onChange={(e) => setMemberData({...memberData, name: e.target.value})} className="w-full mt-1 bg-slate-50 dark:bg-black border border-gray-200 dark:border-gray-800 rounded-xl px-4 py-2 text-slate-900 dark:text-white" />
               </div>
               <div>
                 <label className="text-xs font-bold uppercase text-gray-500">Jabatan Khusus</label>
-                <input required type="text" placeholder="Cth: Ketua Divisi" value={memberData.role} onChange={(e) => setMemberData({...memberData, role: e.target.value})} className="w-full mt-1 bg-slate-50 dark:bg-black border border-gray-200 dark:border-gray-800 rounded-xl px-4 py-2 text-slate-900 dark:text-white" />
+                <input required type="text" placeholder="Cth: Dosen Pembina" value={memberData.role} onChange={(e) => setMemberData({...memberData, role: e.target.value})} className="w-full mt-1 bg-slate-50 dark:bg-black border border-gray-200 dark:border-gray-800 rounded-xl px-4 py-2 text-slate-900 dark:text-white" />
               </div>
             </div>
 
@@ -243,7 +264,7 @@ export default function AdminPengurusPage() {
 
             <div className="flex gap-2">
               <button type="submit" disabled={isLoading} className="flex-1 bg-[#800000] text-white py-3 rounded-xl font-bold uppercase text-xs hover:bg-[#600000]">
-                {editingMemberId ? "Update Anggota" : "Simpan Anggota"}
+                {editingMemberId ? "Update Data" : "Simpan Data"}
               </button>
               {editingMemberId && (
                 <button type="button" onClick={() => { 
@@ -264,7 +285,7 @@ export default function AdminPengurusPage() {
 
       {/* DAFTAR SELURUH ANGGOTA (DI BAWAH) */}
       <div className="mt-8 bg-white dark:bg-[#111] p-6 rounded-[2rem] border border-gray-100 dark:border-gray-800 shadow-sm">
-        <h3 className="text-lg font-bold uppercase mb-4 border-b pb-4 dark:border-gray-800">Daftar Anggota Tersimpan</h3>
+        <h3 className="text-lg font-bold uppercase mb-4 border-b pb-4 dark:border-gray-800">Daftar Data Tersimpan</h3>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead className="text-xs uppercase bg-slate-50 dark:bg-black text-gray-500">
@@ -281,11 +302,13 @@ export default function AdminPengurusPage() {
                 return (
                   <tr key={member.id} className="border-b dark:border-gray-800">
                     <td className="px-4 py-3 flex items-center gap-3">
-                      <img src={member.image_url} className="w-10 h-10 rounded-full object-cover border border-gray-200" />
-                      <span className="font-bold">{member.name}</span>
+                      <img src={member.image_url} className="w-10 h-10 rounded-full object-cover border border-gray-200 dark:border-gray-700" />
+                      <span className="font-bold text-slate-900 dark:text-white">{member.name}</span>
                     </td>
-                    <td className="px-4 py-3">{member.role}</td>
-                    <td className="px-4 py-3 text-xs font-bold text-[#800000]">{parentFrame ? parentFrame.title : "Bingkai Terhapus"}</td>
+                    <td className="px-4 py-3 text-slate-600 dark:text-gray-300">{member.role}</td>
+                    <td className="px-4 py-3 text-xs font-bold text-[#800000] dark:text-[#ff4d4d]">
+                      {parentFrame ? `${parentFrame.title} (${parentFrame.category})` : "Bingkai Terhapus"}
+                    </td>
                     <td className="px-4 py-3">
                       <div className="flex gap-3">
                         <button onClick={() => startEditMember(member)} className="text-blue-500 text-xs font-bold hover:underline">Edit</button>

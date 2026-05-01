@@ -66,7 +66,7 @@ export default function PilarSection() {
               <div className="flex items-center gap-4">
                 <div className="w-8 h-1 bg-[#800000]"></div>
                 <p className="text-sm font-bold tracking-widest text-slate-900 dark:text-white uppercase">
-                  Andi Pratama, Ketua Umum
+                  Tito Nurseha, S.pd., M.si. | Pembina Vistara
                 </p>
               </div>
             </blockquote>
