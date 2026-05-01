@@ -88,7 +88,7 @@ export default function LoginPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@vistara.org"
+                placeholder=""
                 className="w-full bg-black border border-white/10 text-white px-6 py-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#800000]/50 focus:border-[#800000] transition-all placeholder-gray-600"
               />
             </div>
